@@ -9,6 +9,7 @@ public class CatalogItem {
         this.name = name;
         this.desc = desc;
         this.rating = rating;
+
     }
 
     public String getName() {
