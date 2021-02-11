@@ -15,18 +15,34 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/catalog")
-public class MovieCatalogResource {
+public class CatalogResource {
 
     @Autowired
     private RestTemplate restTemplate;
 
+
+//    @RequestMapping("/{userId}")
+//    public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
+//
+//        UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratingsdata/user/" + userId, UserRating.class);
+//
+//        return userRating.getRatings().stream()
+//                .map(rating -> {
+//                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
+//                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
+//                })
+//                .collect(Collectors.toList());
+//
+//    }
+//}
+
     @RequestMapping("/{userID}")
     public List<CatalogItem> getCatalog(@PathVariable("userID") String userID) {
 
-        UserRating ratings = restTemplate.getForObject("http://localhost:8083/ratingsdata/users/foo" + userID, UserRating.class);
+        UserRating ratings = restTemplate.getForObject("http://ratings-data-service/ratingsdata/users/" + userID, UserRating.class);
 
         return ratings.getUserRating().stream().map(rating -> {
-            Movie movie = restTemplate.getForObject("http://localhost:8081/movies/" + rating.getMovieID(), Movie.class);
+            Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieID(), Movie.class);
             return new CatalogItem(movie.getName(), "Description", rating.getRating());
         })
                 .collect(Collectors.toList());
@@ -37,4 +53,3 @@ public class MovieCatalogResource {
 
     }
 }
-
