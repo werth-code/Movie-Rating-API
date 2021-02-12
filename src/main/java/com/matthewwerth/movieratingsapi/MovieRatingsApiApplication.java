@@ -10,19 +10,14 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 public class MovieRatingsApiApplication {
 
+	public static void main(String[] args) {
+		SpringApplication.run(MovieRatingsApiApplication.class, args);
+	}
+
 	@Bean
 	@LoadBalanced
 	public RestTemplate getRestTemplate() {
 		return new RestTemplate();
-	}
-
-//	@Bean
-//	public WebClient.Builder getBuilder() {
-//		return WebClient.builder();
-//	}
-
-	public static void main(String[] args) {
-		SpringApplication.run(MovieRatingsApiApplication.class, args);
 	}
 
 }

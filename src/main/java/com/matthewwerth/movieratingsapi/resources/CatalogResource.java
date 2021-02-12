@@ -4,6 +4,7 @@ import com.matthewwerth.movieratingsapi.models.CatalogItem;
 import com.matthewwerth.movieratingsapi.models.Movie;
 import com.matthewwerth.movieratingsapi.models.Rating;
 import com.matthewwerth.movieratingsapi.models.UserRating;
+import com.netflix.discovery.DiscoveryClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,22 +21,6 @@ public class CatalogResource {
     @Autowired
     private RestTemplate restTemplate;
 
-
-//    @RequestMapping("/{userId}")
-//    public List<CatalogItem> getCatalog(@PathVariable("userId") String userId) {
-//
-//        UserRating userRating = restTemplate.getForObject("http://ratings-data-service/ratingsdata/user/" + userId, UserRating.class);
-//
-//        return userRating.getRatings().stream()
-//                .map(rating -> {
-//                    Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieId(), Movie.class);
-//                    return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
-//                })
-//                .collect(Collectors.toList());
-//
-//    }
-//}
-
     @RequestMapping("/{userID}")
     public List<CatalogItem> getCatalog(@PathVariable("userID") String userID) {
 
@@ -43,7 +28,7 @@ public class CatalogResource {
 
         return ratings.getUserRating().stream().map(rating -> {
             Movie movie = restTemplate.getForObject("http://movie-info-service/movies/" + rating.getMovieID(), Movie.class);
-            return new CatalogItem(movie.getName(), "Description", rating.getRating());
+            return new CatalogItem(movie.getName(), movie.getDescription(), rating.getRating());
         })
                 .collect(Collectors.toList());
 
